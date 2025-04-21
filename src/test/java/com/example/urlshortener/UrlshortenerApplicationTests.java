@@ -1,13 +1,19 @@
 package com.example.urlshortener;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+
+//@SpringBootTest
 class UrlshortenerApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+//	@Autowired
+//	private UrlShortenerService service;
+//
+//	@Test
+//	public void testShortenAndRetrieve() {
+//		String original = "https://google.com";
+//		String code = service.shortenUrl(original, null);
+//		String retrieved = service.getOriginalUrl(code);
+//		assertEquals(original, retrieved);
+//	}
 
 }

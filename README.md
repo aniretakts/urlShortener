@@ -1,2 +1,2 @@
-# One command start/up 
+# One command start-up 
 docker-compose up --build
