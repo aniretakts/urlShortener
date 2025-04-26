@@ -1,5 +1,6 @@
 package com.example.urlshortener.service;
 
+import com.example.urlshortener.exception.UrlExpiredException;
 import com.example.urlshortener.exception.UrlNotFoundException;
 import com.example.urlshortener.model.UrlMapping;
 import com.example.urlshortener.repository.UrlMappingRepository;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -17,6 +19,18 @@ public class UrlShortenerService {
     private UrlMappingRepository repository;
 
     public String shortenUrl(String originalUrl, Duration ttl) {
+
+        Optional<UrlMapping> existingMapping = repository.findByOriginalUrl(originalUrl);
+
+        if (existingMapping.isPresent()) {
+            UrlMapping mapping = existingMapping.get();
+            if (mapping.getExpiresAt() == null || mapping.getExpiresAt().isAfter(LocalDateTime.now())) {
+                return mapping.getShortUrl();
+            } else {
+                repository.delete(mapping);
+            }
+        }
+
         String shortUrl = UUID.randomUUID().toString().substring(0, 6);
         UrlMapping mapping = new UrlMapping();
         mapping.setShortUrl(shortUrl);
@@ -35,7 +49,7 @@ public class UrlShortenerService {
 
         if (mapping.getExpiresAt() != null && mapping.getExpiresAt().isBefore(LocalDateTime.now())) {
             repository.delete(mapping);
-            throw new RuntimeException("URL expired");
+            throw new UrlExpiredException("Short URL expired: " + shortUrl);
         }
 
         return mapping.getOriginalUrl();
