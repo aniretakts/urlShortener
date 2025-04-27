@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.time.Duration;
 
+/**
+ * Controller for handling URL shortening and redirection.
+ */
 @RestController
 public class UrlShortenerController {
 
     @Autowired
-    private UrlShortenerService service;
+    private UrlShortenerService urlShortenerService;
 
     @PostMapping("/shorten")
     public ResponseEntity<String> shorten(@RequestParam String url,
@@ -24,13 +27,13 @@ public class UrlShortenerController {
         }
 
         Duration ttl = (ttlSeconds != null) ? Duration.ofSeconds(ttlSeconds) : null;
-        String shortUrl = service.shortenUrl(url, ttl);
+        String shortUrl = urlShortenerService.shortenUrl(url, ttl);
         return ResponseEntity.ok("http://localhost:8080/" + shortUrl);
     }
 
     @GetMapping("/{shortUrl}")
     public ResponseEntity<Void> redirect(@PathVariable String shortUrl) {
-        String originalUrl = service.getOriginalUrl(shortUrl);
+        String originalUrl = urlShortenerService.getOriginalUrl(shortUrl);
         return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(originalUrl)).build();
     }
 }
