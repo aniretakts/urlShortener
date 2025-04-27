@@ -69,7 +69,7 @@ public class UrlShortenerService {
     private String generateUniqueShortUrl() {
         String shortUrl;
         do {
-            shortUrl = UUID.randomUUID().toString().substring(0, 6); // TODO: replacing with a real hash ?
+            shortUrl = UUID.randomUUID().toString().substring(0, 6);
         } while (repository.findByShortUrl(shortUrl).isPresent());
         return shortUrl;
     }

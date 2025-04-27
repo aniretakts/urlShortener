@@ -1,9 +1,17 @@
 package com.example.urlshortener.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entity class representing a URL mapping in the database.
+ * This class is used to store the original URL and its corresponding short URL.
+ */
+@Getter
+@Setter
 @Entity
 public class UrlMapping {
     @Id
@@ -18,46 +26,4 @@ public class UrlMapping {
     private LocalDateTime createdAt;
 
     private LocalDateTime expiresAt;
-
-
-    // can these through Lombok
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getShortUrl() {
-        return shortUrl;
-    }
-
-    public void setShortUrl(String shortUrl) {
-        this.shortUrl = shortUrl;
-    }
-
-    public String getOriginalUrl() {
-        return originalUrl;
-    }
-
-    public void setOriginalUrl(String originalUrl) {
-        this.originalUrl = originalUrl;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getExpiresAt() {
-        return expiresAt;
-    }
-
-    public void setExpiresAt(LocalDateTime expiresAt) {
-        this.expiresAt = expiresAt;
-    }
 }
